@@ -1,0 +1,12 @@
+.content{
+    background-color: white;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 1);
+    padding: 80px;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 80vh;
+    height: 100%;
+}

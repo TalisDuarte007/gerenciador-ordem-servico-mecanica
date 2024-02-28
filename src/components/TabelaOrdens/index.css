@@ -1,0 +1,25 @@
+/* Estilize sua tabela */
+.box-table{
+  width: 100%;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: Arial, sans-serif;
+}
+
+th, td {
+  border: 1px solid #ddd; /* Bordas finas */
+  padding: 8px; /* Espaçamento interno */
+  text-align: center; /* Centralize o texto */
+}
+
+th {
+  background-color: #f0f0f0; /* Cor de fundo para cabeçalho */
+}
+
+/* Estilize as células alternadas (opcional) */
+tr:nth-child(even) {
+  background-color: #f9f9f9;
+}

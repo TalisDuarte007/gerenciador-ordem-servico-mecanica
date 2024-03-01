@@ -69,3 +69,7 @@
 .btn-cancelar{
     background-color: gray;
 }
+.btn-pesquisar{
+    background-color: silver;
+    color: black;
+}

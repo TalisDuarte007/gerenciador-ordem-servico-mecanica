@@ -1,11 +1,11 @@
 import React, { useState } from "react";
-import "./cadastrar.css";
 import { useNavigate } from "react-router-dom";
 import "../../assets/home/home.css"
+import "./cadastrar.css";
 
-function CadastrarOrdem() {
+function CadastrarOrdem(props) {
   const navigate = useNavigate();
-  const endPoint = "https://sheetdb.io/api/v1/9ned902qlo87s";
+  const endPoint = props.propEndPoint;
   const [servicos, setServicos] = useState([{ descricao: "", preco: "" }]);
 
   const [data, setData] = useState({

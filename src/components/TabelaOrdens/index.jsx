@@ -1,23 +1,17 @@
 import React, { useState, useEffect } from "react";
 import './index.css'
+import icon from '../../views/pdf-icon.png'
 
-export default function TabelaOrdens() {
+export default function TabelaOrdens(props) {
   const [data, setData] = useState([]);
-  const endPoint = "https://sheetdb.io/api/v1/9ned902qlo87s";
 
   const getData = async () => {
-    try {
-      const res = await fetch(endPoint);
-      const data = await res.json();
-      setData(data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+    setData(props.propDB)
+  } 
 
   useEffect(() => {
     getData();
-  }, []);
+  });
 
   return (
     <div className="box-table">
@@ -28,6 +22,7 @@ export default function TabelaOrdens() {
             <th>Nome</th>
             <th>Carro</th>
             <th>Data</th>
+            <th>PDF</th>
           </tr>
         </thead>
         <tbody>
@@ -37,7 +32,9 @@ export default function TabelaOrdens() {
               <td>{item.veiculo}</td>
               <td>{new Date(item.data).getDate()}/  
                   {new Date(item.data).getMonth() + 1}/ 
-                  {new Date(item.data).getFullYear()}</td>
+                  {new Date(item.data).getFullYear()}
+              </td>
+              <td><button className="button-pdf"><img className="image-icon" src={icon} alt="Ícone de PDF" /></button></td>
             </tr>
           ))}
         </tbody>

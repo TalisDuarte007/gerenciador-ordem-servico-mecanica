@@ -6,19 +6,16 @@ import generatePDF from './pdfGenerator';
 export default function TabelaOrdens(props) {
   const [data, setData] = useState([]);
 
-  const getData = async () => {
-    setData(props.propDB)
-  } 
-
   useEffect(() => {
+    const getData = async () => {
+      setData(props.propDB);
+    };
     getData();
-  });
+  }, [props.propDB]);
 
   const handleGeneratePDF = (order) => {
-    // Chame a função para gerar o PDF passando o objeto da ordem como parâmetro
     generatePDF(order);
   };
-
 
   return (
     <div className="box-table">
@@ -33,7 +30,7 @@ export default function TabelaOrdens(props) {
           </tr>
         </thead>
         <tbody>
-          {data.slice(-10).map((item) => (
+          {data.slice(-4).map((item) => (
             <tr key={item.data}>
               <td>{item.nome}</td>
               <td>{item.veiculo}</td>

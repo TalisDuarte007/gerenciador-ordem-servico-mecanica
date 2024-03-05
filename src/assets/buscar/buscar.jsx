@@ -23,6 +23,7 @@ export default function SearchComponent(props) {
     });
     setResultados(resultadosFiltrados);
   };
+  console.log(resultados)
 
   return (
     <div className='content'>

@@ -1,12 +1,14 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "../../assets/home/home.css"
+import "../../assets/home/home.css";
 import "./cadastrar.css";
 
 function CadastrarOrdem(props) {
   const navigate = useNavigate();
   const endPoint = props.propEndPoint;
   const [servicos, setServicos] = useState([{ descricao: "", preco: "" }]);
+  const [formularioValido, setFormularioValido] = useState(false);
+  const [mostrarErro, setMostrarErro] = useState(false);
 
   const [data, setData] = useState({
     nome: "",
@@ -33,25 +35,35 @@ function CadastrarOrdem(props) {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setData((prevData) => ({ ...prevData, [name]: value }));
+
+    const camposObrigatorios = ["nome", "veiculo", "placa"]; // Adicione aqui os nomes dos campos obrigatórios
+    const formularioCompleto = camposObrigatorios.every(
+      (campo) => !!data[campo]
+    );
+    setFormularioValido(formularioCompleto);
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+    if (formularioValido) {
+      e.preventDefault();
 
-    try {
-      const res = await fetch(endPoint, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify([data]),
-      });
-      if (res.ok) {
-        window.location.reload();
-        navigate('/')
+      try {
+        const res = await fetch(endPoint, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify([data]),
+        });
+        if (res.ok) {
+          window.location.reload();
+          navigate("/");
+        }
+      } catch (error) {
+        console.log(error);
       }
-    } catch (error) {
-      console.log(error);
+    } else {
+      setMostrarErro(true);
     }
   };
 
@@ -124,7 +136,7 @@ function CadastrarOrdem(props) {
                   name={`preco`}
                   type="text"
                   value={servico.preco}
-                  step="0.01" 
+                  step="0.01"
                   min="0.01"
                   onChange={(e) =>
                     handleChangeServico(index, "preco", e.target.value)
@@ -138,17 +150,23 @@ function CadastrarOrdem(props) {
           Adicionar Serviço
         </button>
       </div>
+
+      {mostrarErro && (
+        <div className="error-message">
+          Todos os campos devem estar preenchidos.
+        </div>
+      )}
+
       <div className="buttons">
         <button onClick={handleSubmit} className="btn btn-salvar">
           Salvar
         </button>
-        <button onClick={() => navigate('/')} className="btn btn-cancelar">
+        <button onClick={() => navigate("/")} className="btn btn-cancelar">
           Voltar
         </button>
       </div>
-
     </div>
   );
-};
+}
 
 export default CadastrarOrdem;

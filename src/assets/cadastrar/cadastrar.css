@@ -76,3 +76,7 @@
     background-color: gray;
     color: black;
 }
+
+.error-message{
+    margin-top: 50px;
+}

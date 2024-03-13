@@ -25,6 +25,7 @@ export default function TabelaOrdens(props) {
           <tr>
             <th>Nome</th>
             <th>Carro</th>
+            <th>Placa</th>
             <th>Data</th>
             <th>PDF</th>
           </tr>
@@ -34,6 +35,7 @@ export default function TabelaOrdens(props) {
             <tr key={item.data}>
               <td>{item.nome}</td>
               <td>{item.veiculo}</td>
+              <td>{item.placa}</td>
               <td>{new Date(item.data).getDate()}/  
                   {new Date(item.data).getMonth() + 1}/ 
                   {new Date(item.data).getFullYear()}

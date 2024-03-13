@@ -11,6 +11,7 @@ function CadastrarOrdem(props) {
   const [data, setData] = useState({
     nome: "",
     veiculo: "",
+    placa: "",
     data: new Date().toString(),
     lista_servicos: servicos,
   });
@@ -82,6 +83,18 @@ function CadastrarOrdem(props) {
             className="input-box"
           />
         </div>
+        <div className="label-box">
+          <label htmlFor="placa">
+            <span>Placa:</span>
+          </label>
+          <input
+            name="placa"
+            type="text"
+            value={data.placa}
+            onChange={handleChange}
+            className="input-box"
+          />
+        </div>
       </form>
       <div>
         <h3>Serviços Realizados:</h3>
@@ -109,8 +122,10 @@ function CadastrarOrdem(props) {
                 <input
                   className="input-box"
                   name={`preco`}
-                  type="number"
+                  type="text"
                   value={servico.preco}
+                  step="0.01" 
+                  min="0.01"
                   onChange={(e) =>
                     handleChangeServico(index, "preco", e.target.value)
                   }
@@ -128,7 +143,7 @@ function CadastrarOrdem(props) {
           Salvar
         </button>
         <button onClick={() => navigate('/')} className="btn btn-cancelar">
-          Cancelar
+          Voltar
         </button>
       </div>
 

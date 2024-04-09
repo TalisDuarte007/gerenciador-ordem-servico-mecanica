@@ -45,7 +45,11 @@ function CadastrarOrdem(props) {
     const { name, value } = e.target;
     setData((prevData) => ({ ...prevData, [name]: value }));
 
+<<<<<<< HEAD
     const camposObrigatorios = ["nome", "veiculo", "placa"];
+=======
+    const camposObrigatorios = ["nome", "veiculo", "placa"]; // Adicione aqui os nomes dos campos obrigatórios
+>>>>>>> 60018f2080e8510773334a9ca599016dc061bd58
     const formularioCompleto = camposObrigatorios.every(
       (campo) => !!data[campo]
     );

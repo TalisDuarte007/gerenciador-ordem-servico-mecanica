@@ -2,12 +2,15 @@
   "name": "gerenciamento-ordem-servico",
   "version": "0.1.0",
   "private": true,
+  "main": "public/main.js",
   "dependencies": {
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
     "axios": "^1.6.7",
     "buffer": "^6.0.3",
+    "electron-builder": "^24.13.3",
+    "electron-is-dev": "^3.0.1",
     "gaxios": "^6.3.0",
     "google-auth-library": "^9.6.3",
     "google-spreadsheet": "^4.1.1",
@@ -23,6 +26,7 @@
     "react-scripts": "5.0.1",
     "stream-http": "^3.2.0",
     "url": "^0.11.3",
+    "uuidv4": "^6.2.13",
     "web-vitals": "^2.1.4",
     "webpack": "^5.90.3"
   },
@@ -30,7 +34,9 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "electron-dev": "electron .",
+    "electron": "electron ."
   },
   "eslintConfig": {
     "extends": [
@@ -49,5 +55,9 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "electron": "^29.1.3",
+    "electron-packager": "^17.1.2"
   }
 }

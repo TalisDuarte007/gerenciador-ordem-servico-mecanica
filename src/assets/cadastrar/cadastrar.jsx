@@ -1,26 +1,37 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "../../assets/home/home.css"
+import "../../assets/home/home.css";
 import "./cadastrar.css";
+import icon from "../../views/x-icon.png";
+import { v4 as uuidv4 } from "uuid";
+import Voltar from "../../components/Botoes/BotaoVoltar/Voltar";
 
 function CadastrarOrdem(props) {
   const navigate = useNavigate();
   const endPoint = props.propEndPoint;
   const [servicos, setServicos] = useState([{ descricao: "", preco: "" }]);
+  const [formularioValido, setFormularioValido] = useState(false);
+  const [mostrarErro, setMostrarErro] = useState(false);
 
   const [data, setData] = useState({
+    id: uuidv4(),
     nome: "",
     veiculo: "",
     placa: "",
     data: new Date().toString(),
     lista_servicos: servicos,
   });
-
   const adicionarServico = () => {
     const novaListaServicos = [...servicos];
     novaListaServicos.push({ descricao: "", preco: "" });
     setServicos(novaListaServicos);
     setData((prevData) => ({ ...prevData, lista_servicos: novaListaServicos }));
+  };
+
+  const removerServico = (index) => {
+    setServicos((servicosAnteriores) => {
+      return servicosAnteriores.filter((_, i) => i !== index);
+    });
   };
 
   const handleChangeServico = (index, field, value) => {
@@ -33,25 +44,35 @@ function CadastrarOrdem(props) {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setData((prevData) => ({ ...prevData, [name]: value }));
+
+    const camposObrigatorios = ["nome", "veiculo", "placa"];
+    const formularioCompleto = camposObrigatorios.every(
+      (campo) => !!data[campo]
+    );
+    setFormularioValido(formularioCompleto);
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+    if (formularioValido) {
+      e.preventDefault();
 
-    try {
-      const res = await fetch(endPoint, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify([data]),
-      });
-      if (res.ok) {
-        window.location.reload();
-        navigate('/')
+      try {
+        const res = await fetch(endPoint, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify([data]),
+        });
+        if (res.ok) {
+          window.location.reload();
+          navigate("/");
+        }
+      } catch (error) {
+        console.log(error);
       }
-    } catch (error) {
-      console.log(error);
+    } else {
+      setMostrarErro(true);
     }
   };
 
@@ -99,15 +120,15 @@ function CadastrarOrdem(props) {
       <div>
         <h3>Serviços Realizados:</h3>
         {servicos.map((servico, index) => (
-          <div key={`servico`}>
+          <div key={`servico-${index}`} className="servico-container">
             <form className="form-box--servicos">
               <div className="label-box">
-                <label htmlFor={`descricao`}>
+                <label htmlFor={`descricao-${index}`}>
                   <span>Descrição</span>
                 </label>
                 <input
                   className="input-box"
-                  name={`descricao`}
+                  id={`descricao-${index}`}
                   type="text"
                   value={servico.descricao}
                   onChange={(e) =>
@@ -116,21 +137,28 @@ function CadastrarOrdem(props) {
                 />
               </div>
               <div className="label-box">
-                <label htmlFor={`preco`}>
+                <label htmlFor={`preco-${index}`}>
                   <span>Preço</span>
                 </label>
                 <input
                   className="input-box"
-                  name={`preco`}
-                  type="text"
+                  id={`preco-${index}`}
+                  type="number"
                   value={servico.preco}
-                  step="0.01" 
+                  step="0.01"
                   min="0.01"
                   onChange={(e) =>
                     handleChangeServico(index, "preco", e.target.value)
                   }
                 />
               </div>
+              <button
+                type="button"
+                className="btn btn-remover"
+                onClick={() => removerServico(index)}
+              >
+                <img src={icon} alt="" className="image-btn--remover" />
+              </button>
             </form>
           </div>
         ))}
@@ -138,17 +166,21 @@ function CadastrarOrdem(props) {
           Adicionar Serviço
         </button>
       </div>
+
+      {mostrarErro && (
+        <div className="error-message">
+          Todos os campos devem estar preenchidos.
+        </div>
+      )}
+
       <div className="buttons">
         <button onClick={handleSubmit} className="btn btn-salvar">
           Salvar
         </button>
-        <button onClick={() => navigate('/')} className="btn btn-cancelar">
-          Voltar
-        </button>
+        <Voltar/>
       </div>
-
     </div>
   );
-};
+}
 
 export default CadastrarOrdem;

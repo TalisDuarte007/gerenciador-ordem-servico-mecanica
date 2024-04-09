@@ -57,11 +57,7 @@
     ]
   },
   "devDependencies": {
-<<<<<<< HEAD
     "electron": "^29.1.3",
     "electron-packager": "^17.1.2"
-=======
-    "electron": "^29.1.1"
->>>>>>> 60018f2080e8510773334a9ca599016dc061bd58
   }
 }

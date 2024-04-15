@@ -10,6 +10,7 @@ const EditarOrdem = () => {
   const endPoint = "https://sheetdb.io/api/v1/9ned902qlo87s";
   const [dataEditada, setDataEditada] = useState({});
   const [servicos, setServicos] = useState([]);
+  const [ordensServico, setOrdensServico] = useState([]);
 
   const { state } = useLocation();
   const ordem = state?.item;
@@ -18,7 +19,7 @@ const EditarOrdem = () => {
     setDataEditada(ordem);
     try {
       let dadosArray = JSON.parse(ordem.lista_servicos);
-      setServicos(dadosArray); // Verifique se isso exibe corretamente seu array de objetos
+      setServicos(dadosArray);
     } catch (error) {
       console.error("Erro ao fazer parse da string JSON:", error);
     }
@@ -35,7 +36,7 @@ const EditarOrdem = () => {
       setServicos(servicosAtualizados);
       setDataEditada((prevData) => ({
         ...prevData,
-        lista_servicos: JSON.stringify(servicosAtualizados), // Atualize a lista de serviços na ordem
+        lista_servicos: JSON.stringify(servicosAtualizados),
       }));
     } else {
       setDataEditada((prevData) => ({
@@ -50,7 +51,10 @@ const EditarOrdem = () => {
       return servicosAnteriores.filter((_, i) => i !== index);
     });
   };
-  console.log(dataEditada);
+
+  const adicionarOrdemServico = () => {
+    setOrdensServico([...ordensServico, { descricao: "", preco: "" }]);
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -65,7 +69,7 @@ const EditarOrdem = () => {
           nome: dataEditada.nome,
           veiculo: dataEditada.veiculo,
           placa: dataEditada.placa,
-          lista_servicos: JSON.stringify(servicos), // Envie apenas a lista de serviços atualizada
+          lista_servicos: JSON.stringify(servicos),
         }),
       });
       if (res.ok) {
@@ -170,11 +174,58 @@ const EditarOrdem = () => {
             </form>
           </div>
         ))}
+        {ordensServico.map((ordem, index) => (
+          <div key={`ordem-servico-${index}`} className="servico-container">
+            <form className="form-box--servicos">
+              <div className="label-box">
+                <label htmlFor={`descricao-${index}`}>
+                  <span>Descrição</span>
+                </label>
+                <input
+                  className="input-box"
+                  id={`descricao-${index}`}
+                  type="text"
+                  value={ordem.descricao || ""}
+                  onChange={(e) =>
+                    handleChangeEditado(index, "descricao", e.target.value)
+                  }
+                />
+              </div>
+              <div className="label-box">
+                <label htmlFor={`preco-${index}`}>
+                  <span>Preço</span>
+                </label>
+                <input
+                  className="input-box"
+                  id={`preco-${index}`}
+                  type="number"
+                  value={ordem.preco || ""}
+                  step="0.01"
+                  min="0.01"
+                  onChange={(e) =>
+                    handleChangeEditado(index, "preco", e.target.value)
+                  }
+                />
+              </div>
+              <button
+                type="button"
+                className="btn btn-remover"
+                onClick={() => removerServico(index)}
+              >
+                <img src={icon} alt="" className="image-btn--remover" />
+              </button>
+            </form>
+          </div>
+        ))}
+        <button onClick={adicionarOrdemServico} className="btn btn-adicionar">
+          Adicionar Serviço
+        </button>
       </div>
       <div className="buttons">
         <button onClick={handleSubmit} className="btn btn-salvar">
           Salvar
         </button>
+        
         <Voltar />
       </div>
 

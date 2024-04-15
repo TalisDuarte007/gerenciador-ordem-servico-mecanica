@@ -3,6 +3,8 @@ import { useLocation } from "react-router-dom";
 import ExcluirOrdem from "../../components/Botoes/ExcluirOrdem/ExcluirOrdem.jsx";
 import icon from "../../views/x-icon.png";
 import Voltar from "../../components/Botoes/BotaoVoltar/Voltar.jsx";
+import "../cadastrar/cadastrar.css";
+import "../../assets/home/home.css";
 
 const EditarOrdem = () => {
   const endPoint = "https://sheetdb.io/api/v1/9ned902qlo87s";
@@ -52,7 +54,7 @@ const EditarOrdem = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
+
     try {
       const res = await fetch(`${endPoint}/id/${dataEditada.id}`, {
         method: "PATCH",
@@ -75,8 +77,6 @@ const EditarOrdem = () => {
       console.error("Erro ao atualizar a ordem:", error);
     }
   };
-  
-  
 
   return (
     <div className="content">
@@ -97,7 +97,7 @@ const EditarOrdem = () => {
           />
         </div>
         <div className="label-box">
-          <label htmlFor="nome">
+          <label htmlFor="veiculo">
             <span>Veículo:</span>
           </label>
           <input
@@ -111,7 +111,7 @@ const EditarOrdem = () => {
           />
         </div>
         <div className="label-box">
-          <label htmlFor="nome">
+          <label htmlFor="placa">
             <span>Placa:</span>
           </label>
           <input
@@ -124,61 +124,60 @@ const EditarOrdem = () => {
             className="input-box"
           />
         </div>
-        <div>
-          <h3>Serviços Realizados:</h3>
-          {servicos.map((servico, index) => (
-            <div key={`servico-${index}`} className="servico-container">
-              <form className="form-box--servicos">
-                <div className="label-box">
-                  <label htmlFor={`descricao-${index}`}>
-                    <span>Descrição</span>
-                  </label>
-                  <input
-                    className="input-box"
-                    id={`descricao-${index}`}
-                    type="text"
-                    value={servico.descricao || ""}
-                    onChange={(e) =>
-                      handleChangeEditado(index, "descricao", e.target.value)
-                    }
-                  />
-                </div>
-                <div className="label-box">
-                  <label htmlFor={`preco-${index}`}>
-                    <span>Preço</span>
-                  </label>
-                  <input
-                    className="input-box"
-                    id={`preco-${index}`}
-                    type="number"
-                    value={servico.preco || ""}
-                    step="0.01"
-                    min="0.01"
-                    onChange={(e) =>
-                      handleChangeEditado(index, "preco", e.target.value)
-                    }
-                  />
-                </div>
-                <button
-                  type="button"
-                  className="btn btn-remover"
-                  onClick={() => removerServico(index)}
-                >
-                  <img src={icon} alt="" className="image-btn--remover" />
-                </button>
-              </form>
-            </div>
-          ))}
-        </div>
-        <div className="buttons">
-          <button onClick={handleSubmit} className="btn btn-salvar">
-            Salvar
-          </button>
-          <Voltar/>
-        </div>
-        
       </form>
-      
+      <div>
+        <h3>Serviços Realizados:</h3>
+        {servicos.map((servico, index) => (
+          <div key={`servico-${index}`} className="servico-container">
+            <form className="form-box--servicos">
+              <div className="label-box">
+                <label htmlFor={`descricao-${index}`}>
+                  <span>Descrição</span>
+                </label>
+                <input
+                  className="input-box"
+                  id={`descricao-${index}`}
+                  type="text"
+                  value={servico.descricao || ""}
+                  onChange={(e) =>
+                    handleChangeEditado(index, "descricao", e.target.value)
+                  }
+                />
+              </div>
+              <div className="label-box">
+                <label htmlFor={`preco-${index}`}>
+                  <span>Preço</span>
+                </label>
+                <input
+                  className="input-box"
+                  id={`preco-${index}`}
+                  type="number"
+                  value={servico.preco || ""}
+                  step="0.01"
+                  min="0.01"
+                  onChange={(e) =>
+                    handleChangeEditado(index, "preco", e.target.value)
+                  }
+                />
+              </div>
+              <button
+                type="button"
+                className="btn btn-remover"
+                onClick={() => removerServico(index)}
+              >
+                <img src={icon} alt="" className="image-btn--remover" />
+              </button>
+            </form>
+          </div>
+        ))}
+      </div>
+      <div className="buttons">
+        <button onClick={handleSubmit} className="btn btn-salvar">
+          Salvar
+        </button>
+        <Voltar />
+      </div>
+
       <ExcluirOrdem props={ordem.id} />
     </div>
   );

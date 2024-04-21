@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import './index.css'
 import iconPDF from '../../views/pdf-icon.png'
 import iconEditar from '../../views/editar-icon.png'
-import generatePDF from './pdfGenerator';
+// import generatePDF from './pdfGenerator';
 
 export default function TabelaOrdens(props) {
   const navigate = useNavigate()
@@ -17,9 +17,14 @@ export default function TabelaOrdens(props) {
     getData();
   }, [props.propDB]);
 
-  const handleGeneratePDF = (order) => {
-    generatePDF(order);
-  };
+  // const handleGeneratePDF = (order) => {
+  //   console.log(order)
+  //   generatePDF(order);
+  // };
+
+  const handleNavigatePDF = (item) => {
+    navigate('/pdfGenerator', { state: { item } });
+  }
 
   const handleNavigate = (item) => {
     navigate('/editar', { state: { item } });
@@ -49,7 +54,8 @@ export default function TabelaOrdens(props) {
                   {new Date(item.data).getMonth() + 1}/ 
                   {new Date(item.data).getFullYear()}
               </td>
-              <td><button className="button-pdf" onClick={() => handleGeneratePDF(item)}><img className="image-icon" src={iconPDF} alt="Ícone de PDF" /></button></td>
+              {/* <td><button className="button-pdf" onClick={() => handleGeneratePDF(item)}><img className="image-icon" src={iconPDF} alt="Ícone de PDF" /></button></td> */}
+              <td><button className="button-pdf" onClick={() => handleNavigatePDF(item)}><img className="image-icon" src={iconPDF} alt="Ícone de PDF" /></button></td>
               <td><button className="button-pdf" onClick={() => handleNavigate(item)}><img className="image-icon" src={iconEditar} alt="Ícone de Editar" /></button></td>
             </tr>
           ))}

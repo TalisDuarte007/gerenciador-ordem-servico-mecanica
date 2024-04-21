@@ -5,6 +5,7 @@ import Home from './assets/home/home';
 import Cadastrar from './assets/cadastrar/cadastrar';
 import Buscar from './assets/buscar/buscar';
 import EditarOrdem from './assets/editar/editar';
+import MyDocument from './components/TabelaOrdens/pdfGenerator';
 
 export default function App() {
   const [data, setData] = useState([]);
@@ -30,6 +31,7 @@ export default function App() {
         <Route path='/cadastrar' element={<Cadastrar propEndPoint={endPoint}/>} />
         <Route path='/buscar' element={<Buscar propDB={data}/>} />
         <Route path='/editar' element={<EditarOrdem/>} />
+        <Route path='/pdfGenerator' element={<MyDocument/>} />
       </Routes>
     </Router>
   );

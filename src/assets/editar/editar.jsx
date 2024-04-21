@@ -34,10 +34,6 @@ const EditarOrdem = () => {
         return servico;
       });
       setServicos(servicosAtualizados);
-      setDataEditada((prevData) => ({
-        ...prevData,
-        lista_servicos: JSON.stringify(servicosAtualizados),
-      }));
     } else {
       setDataEditada((prevData) => ({
         ...prevData,
@@ -45,6 +41,9 @@ const EditarOrdem = () => {
       }));
     }
   };
+  
+  
+  
 
   const removerServico = (index) => {
     setServicos((servicosAnteriores) => {
@@ -58,7 +57,7 @@ const EditarOrdem = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+  
     try {
       const res = await fetch(`${endPoint}/id/${dataEditada.id}`, {
         method: "PATCH",
@@ -69,7 +68,7 @@ const EditarOrdem = () => {
           nome: dataEditada.nome,
           veiculo: dataEditada.veiculo,
           placa: dataEditada.placa,
-          lista_servicos: JSON.stringify(servicos),
+          lista_servicos: servicos, // Certifique-se de que servicos está no formato esperado pelo backend
         }),
       });
       if (res.ok) {
@@ -81,6 +80,7 @@ const EditarOrdem = () => {
       console.error("Erro ao atualizar a ordem:", error);
     }
   };
+  
 
   return (
     <div className="content">

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import {
   pdf,
   Document,
@@ -8,10 +8,9 @@ import {
   StyleSheet,
   Image,
 } from "@react-pdf/renderer";
-import { useLocation } from "react-router-dom";
 import logo from "../../views/logo.jpg";
+import iconPDF from '../../views/pdf-icon.png'
 
-// Estilos personalizados
 const styles = StyleSheet.create({
   page: {
     flexDirection: "column",
@@ -93,30 +92,14 @@ const styles = StyleSheet.create({
   },
 });
 
-// Componente para renderizar o PDF
-const MyDocument = () => {
-  const [data, setData] = useState({});
-  const [servicos, setServicos] = useState([]);
-  const { state } = useLocation();
-  const order = state?.item;
-
-  useEffect(() => {
-    setData(order);
-    try {
-      let dadosArray = JSON.parse(order.lista_servicos);
-      setServicos(dadosArray);
-    } catch (error) {
-      console.error("Erro ao fazer parse da string JSON:", error);
-    }
-  }, [order]);
-
-  console.log(data);
-  console.log(servicos);
-
+const DownloadPDF = ({ order }) => {
   const handleDownloadPDF = async () => {
-    if (!data || !servicos || servicos.length === 0) {
-      return; // Não faz download se os dados estiverem ausentes
+    if (!order || !order.nome || !order.veiculo || !order.placa || !order.lista_servicos) {
+      return;
     }
+
+    const { nome, veiculo, placa, lista_servicos } = order;
+    const servicos = JSON.parse(lista_servicos);
 
     const filteredServicos = servicos.filter(
       (servico) => servico.descricao !== null && servico.preco !== null
@@ -147,20 +130,20 @@ const MyDocument = () => {
             <View style={styles.container}>
               <View style={styles.subContainer}>
                 <Text style={styles.info}>Cliente:</Text>
-                <Text style={styles.info}>{data.nome}</Text>
+                <Text style={styles.info}>{nome}</Text>
               </View>
               <View style={styles.subContainer}>
                 <Text style={styles.info}>Veículo:</Text>
-                <Text style={styles.info}>{data.veiculo}</Text>
+                <Text style={styles.info}>{veiculo}</Text>
               </View>
               <View style={styles.subContainer}>
                 <Text style={styles.info}>Placa:</Text>
-                <Text style={styles.info}>{data.placa}</Text>
+                <Text style={styles.info}>{placa}</Text>
               </View>
               <View style={styles.subContainer}>
                 <Text style={styles.info}>Data:</Text>
                 <Text style={styles.info}>
-                  {new Date(data.data).toLocaleDateString()}
+                  {new Date().toLocaleDateString()} {/* Alterei para pegar a data atual */}
                 </Text>
               </View>
             </View>
@@ -194,22 +177,19 @@ const MyDocument = () => {
     ).toBlob();
 
     if (blob) {
-      // Cria um URL temporário para o blob
       const url = URL.createObjectURL(blob);
-      // Cria um link para iniciar o download
       const link = document.createElement("a");
       link.href = url;
-      link.download = "ordem_de_servico.pdf"; // Nome do arquivo
-      // Simula o clique no link para iniciar o download
+      link.download = "ordem_de_servico.pdf";
       link.click();
     }
   };
 
   return (
-    <div>
-      <button onClick={handleDownloadPDF}>Baixar PDF</button>
-    </div>
+    <button className="button-pdf" onClick={handleDownloadPDF}>
+      <img className="image-icon" src={iconPDF} alt="Ícone de PDF" />
+    </button>
   );
 };
 
-export default MyDocument;
+export default DownloadPDF;

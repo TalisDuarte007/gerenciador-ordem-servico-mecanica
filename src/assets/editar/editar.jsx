@@ -6,11 +6,12 @@ import Voltar from "../../components/Botoes/BotaoVoltar/Voltar.jsx";
 import "../cadastrar/cadastrar.css";
 import "../../assets/home/home.css";
 
-const EditarOrdem = () => {
-  const endPoint = "https://sheetdb.io/api/v1/9ned902qlo87s";
+const EditarOrdem = (props) => {
+  const endPoint = props.propEndPoint;
   const [dataEditada, setDataEditada] = useState({});
   const [servicos, setServicos] = useState([]);
   const [ordensServico, setOrdensServico] = useState([]);
+  
 
   const { state } = useLocation();
   const ordem = state?.item;
@@ -229,7 +230,7 @@ const EditarOrdem = () => {
         <Voltar />
       </div>
 
-      <ExcluirOrdem props={ordem.id} />
+      <ExcluirOrdem ordemData={{ id: ordem.id, endPoint: endPoint }} />
     </div>
   );
 };

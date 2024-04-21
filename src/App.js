@@ -9,11 +9,12 @@ import MyDocument from './components/TabelaOrdens/pdfGenerator';
 
 export default function App() {
   const [data, setData] = useState([]);
-  const endPoint = "https://sheetdb.io/api/v1/9ned902qlo87s?_format=index";
+  const endPoint = "https://sheetdb.io/api/v1/9ned902qlo87s";
 
   const getData = async () => {
     try {
-      const res = await fetch(endPoint);
+      const endpointWithFormat = `${endPoint}?_format=index`;
+      const res = await fetch(endpointWithFormat);
       const data = await res.json();
       setData(Object.keys(data).map((key) => data[key]));
     } catch (error) {
@@ -30,7 +31,7 @@ export default function App() {
         <Route path='/' element={<Home propDB={data}/>}  />
         <Route path='/cadastrar' element={<Cadastrar propEndPoint={endPoint}/>} />
         <Route path='/buscar' element={<Buscar propDB={data}/>} />
-        <Route path='/editar' element={<EditarOrdem/>} />
+        <Route path='/editar' element={<EditarOrdem propEndPoint={endPoint}/>} />
         <Route path='/pdfGenerator' element={<MyDocument/>} />
       </Routes>
     </Router>

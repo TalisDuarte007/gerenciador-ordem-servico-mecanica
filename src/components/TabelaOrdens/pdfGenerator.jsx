@@ -105,6 +105,8 @@ const DownloadPDF = ({ order }) => {
       (servico) => servico.descricao !== null && servico.preco !== null
     );
 
+    const fileName = `${nome}_${veiculo}_${placa}.pdf`
+
     const blob = await pdf(
       <Document>
         <Page size="A4" style={styles.page}>
@@ -180,7 +182,7 @@ const DownloadPDF = ({ order }) => {
       const url = URL.createObjectURL(blob);
       const link = document.createElement("a");
       link.href = url;
-      link.download = "ordem_de_servico.pdf";
+      link.download = fileName; 
       link.click();
     }
   };

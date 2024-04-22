@@ -1,17 +1,25 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import "../../assets/home/home.css";
 import "./cadastrar.css";
 import icon from "../../views/x-icon.png";
 import { v4 as uuidv4 } from "uuid";
 import Voltar from "../../components/Botoes/BotaoVoltar/Voltar";
+import Popup from "../../components/popup/popup";
 
 function CadastrarOrdem(props) {
-  const navigate = useNavigate();
   const endPoint = props.propEndPoint;
   const [servicos, setServicos] = useState([{ descricao: "", preco: "" }]);
   const [formularioValido, setFormularioValido] = useState(false);
   const [mostrarErro, setMostrarErro] = useState(false);
+  const [showPopup, setShowPopup] = useState(false);
+
+  const handleSuccessResponse = () => {
+    setShowPopup(true);
+  };
+
+  const handleClosePopup = () => {
+    setShowPopup(false);
+  };
 
   const [data, setData] = useState({
     id: uuidv4(),
@@ -66,7 +74,7 @@ function CadastrarOrdem(props) {
         });
         if (res.ok) {
           window.location.reload();
-          navigate("/");
+          handleSuccessResponse();
         }
       } catch (error) {
         console.log(error);
@@ -179,7 +187,11 @@ function CadastrarOrdem(props) {
         </button>
         <Voltar/>
       </div>
+      {showPopup && (
+        <Popup message="Operação realizada com sucesso!" onClose={handleClosePopup} />
+      )}
     </div>
+    
   );
 }
 

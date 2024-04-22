@@ -5,12 +5,23 @@ import icon from "../../views/x-icon.png";
 import Voltar from "../../components/Botoes/BotaoVoltar/Voltar.jsx";
 import "../cadastrar/cadastrar.css";
 import "../../assets/home/home.css";
+import Popup from "../../components/popup/popup.jsx";
 
 const EditarOrdem = (props) => {
   const endPoint = props.propEndPoint;
   const [dataEditada, setDataEditada] = useState({});
   const [servicos, setServicos] = useState([]);
   const [ordensServico, setOrdensServico] = useState([]);
+
+  const [showPopup, setShowPopup] = useState(false);
+
+  const handleSuccessResponse = () => {
+    setShowPopup(true);
+  };
+
+  const handleClosePopup = () => {
+    setShowPopup(false);
+  };
   
 
   const { state } = useLocation();
@@ -74,6 +85,7 @@ const EditarOrdem = (props) => {
       });
       if (res.ok) {
         console.log("Ordem atualizada com sucesso!");
+        handleSuccessResponse()
       } else {
         console.error("Falha ao atualizar a ordem.");
       }
@@ -231,6 +243,9 @@ const EditarOrdem = (props) => {
       </div>
 
       <ExcluirOrdem ordemData={{ id: ordem.id, endPoint: endPoint }} />
+      {showPopup && (
+        <Popup message="Operação realizada com sucesso!" onClose={handleClosePopup} />
+      )}
     </div>
   );
 };
